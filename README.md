@@ -1,9 +1,11 @@
 MythTV backend
 ==============
 
-Docker image to run a MythTV backend. It also includes MythWeb and HDHomeRun utils.
-This image is adapted from an0t8/mythtv-server and thomfab/docker-mythbackend to get a more recent MythTV version, use official Ubuntu and remove RDP (use setup 
-branch/tag for that). All special MythTV folders (as setup in mythtv-setup) should be added to /home/mythtv.
+Docker image to run a MythTV backend. It also includes database backups and HDHomeRun utils.
+All special MythTV folders (as setup in mythtv-setup) should be added to /home/mythtv. 
+The mythdatabase branch/tag should be run side-by-side with master/latest branch/tag. It will run the cron job to check and backup your mythtv database.
+The setup branch/tag is intended to run mythtv-setup over RDP. This should be run instead of the master/latest branch/tag, during setup only. 
+A MythWeb branch/tag is to come.
 Note that this container does not include a MySQL or MariaDB database. You must set up a database before (no need to create the mythconverg database as it is automatically created if it does not exist).
 
 ## Usage
@@ -25,7 +27,19 @@ sudo docker run -d --name mythbackend \
         -e "TZ=Europe/Paris" \
         -h mythbackend \
         --network="host" \
-        dheaps/mythbackend
+        dheaps/mythbackend:latest &&
+        
+sudo docker run -d --name mythdatabase \
+        -e "USER_ID=1001" \
+        -e "GROUP_ID=1001" \
+        -e "DATABASE_HOST=dbhost" \
+        -e "DATABASE_PORT=3306" \
+        -e "DATABASE_ROOT=root" \
+        -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_USER=mythtv" \
+        -e "DATABASE_PWD=mythtv" \
+        -e "TZ=Europe/Paris" \
+		 dheaps/mythbackend:mythdatabase
 ```
 
 Below are some remarks about the parameters.
