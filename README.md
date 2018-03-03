@@ -1,8 +1,9 @@
 MythTV backend
 ==============
 
-Docker container to run a MythTV backend. It also includes MythWeb and HDHomeRun utils.
-This container is adapted from an0t8/mythtv-server to get a more recent MythTV version and to add volumes for recordings and video.
+Docker image to run a MythTV backend. It also includes MythWeb and HDHomeRun utils.
+This image is adapted from an0t8/mythtv-server and thomfab/docker-mythbackend to get a more recent MythTV version, use official Ubuntu and remove RDP (use setup 
+branch/tag for that). All special MythTV folders (as setup in mythtv-setup) should be added to /home/mythtv.
 Note that this container does not include a MySQL or MariaDB database. You must set up a database before (no need to create the mythconverg database as it is automatically created if it does not exist).
 
 ## Usage
@@ -10,9 +11,7 @@ Note that this container does not include a MySQL or MariaDB database. You must 
 Launch the container via docker:
 ```
 sudo docker run -d --name mythbackend \
-        -p "3389:3389" -p "5000:5000/udp" -p "6543:6543" -p "6544:6544" \
-        -v "/path/to/recordings:/mnt/recordings" \
-        -v "/path/to/video:/mnt/video" \
+        -p "5000:5000" -p "6543:6543" -p "6544:6544" \
         -v "/path/to/mythtv-home:/home/mythtv" \
         -v "/path/to/mythtv-backups:/var/lib/mythtv/db_backups" \
         -e "USER_ID=1001" \
@@ -21,17 +20,18 @@ sudo docker run -d --name mythbackend \
         -e "DATABASE_PORT=3306" \
         -e "DATABASE_ROOT=root" \
         -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_USER=mythtv" \
+        -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \
         -h mythbackend \
         --network="host" \
-        thomfab/docker-mythbackend
+        dheaps/mythbackend
 ```
 
 Below are some remarks about the parameters.
 
 ## Ports
 
-* Port 3389 is used for RDP access to the Mate desktop. Mainly used to launch mythtv-setup
 * Port 5000/udp is used for UPNP
 * Port 6543 and 6544 are used by MythTV (API and web GUI)
 
@@ -47,6 +47,7 @@ Below are some remarks about the parameters.
 * USER_ID and GROUP_ID : used to match IDs defined on the Docker host so that UNIX rights are correct when accessing the volumes
 * DATABASE_HOST and DATABASE_PORT : the host (and port) where the mythconverg database is. If the database exists it is untouched, if not it is created
 * DATABASE_ROOT and DATABASE_ROOT_PWD : credentials used to create the database if needed
+* DATABASE_USER and DATABASE_PWD : credentials used check if mysql is up and wait otherwise; and to create config as necessary 
 * TZ : to set the correct timezone
 
 ## Network parameters
