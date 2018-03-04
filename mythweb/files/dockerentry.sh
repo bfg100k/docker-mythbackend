@@ -47,4 +47,4 @@ EOF
 fi
 
 echo "starting mythweb"
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+/usr/sbin/apache2ctl -D FOREGROUND
