@@ -81,23 +81,6 @@ fi
 
 chown -R mythtv:users /var/lib/mythtv/banners  /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
 
-#Does the MythTV Database Exist?
-if [ "xpwd" != "x$DATABASE_ROOT_PWD"]; then
-	echo "Check if mythconverg database exists"
-	output=$(mysql -s -N -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'mythconverg'" information_schema)
-	echo "  Query result = ${output}"
-	if [[ -z "${output}" ]]; then
-	  echo "Creating database(s)."
-	  mysql -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "CREATE DATABASE IF NOT EXISTS mythconverg"
-	  mysql -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "CREATE USER 'mythtv' IDENTIFIED BY 'mythtv'"
-	  mysql -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "GRANT ALL ON mythconverg.* TO 'mythtv' IDENTIFIED BY 'mythtv'"
-	  mysql -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "GRANT CREATE TEMPORARY TABLES ON mythconverg.* TO 'mythtv' IDENTIFIED BY 'mythtv'"
-	  mysql -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u ${DATABASE_ROOT} -p${DATABASE_ROOT_PWD} -e "ALTER DATABASE mythconverg DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci"
-	else
-	  echo "Database already exists"
-	fi
-fi
-
 #Bring up the backend
 chown -R mythtv:users /var/log/mythtv
 
