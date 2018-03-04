@@ -1,5 +1,8 @@
 FROM dheaps/mythbackend:latest
 
+# Add files
+COPY files /root/
+
 # Install mythtv-database
 RUN apt-get install -y mythtv-database && \
 # clean up

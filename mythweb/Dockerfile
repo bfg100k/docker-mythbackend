@@ -2,6 +2,9 @@ FROM dheaps/mythbackend:latest
 
 EXPOSE 80
 
+# Add files
+COPY files /root/
+
 # Install mythtvweb
 RUN apt-get install -y mythweb && \
 # clean up
