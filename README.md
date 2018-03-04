@@ -55,7 +55,7 @@ sudo docker run -d --name mythweb \
 or
 
 sudo docker run -d --name mythbackend \
-        -p "5000:5000" -p "6543:6543" -p "6544:6544" \
+        -p "5000:5000" -p "6543:6543" -p "6544:6544" -p 3389:3389 \
         -v "/path/to/mythtv-home:/home/mythtv" \
         -v "/path/to/mythtv-backups:/var/lib/mythtv/db_backups" \
         -e "USER_ID=1001" \
@@ -78,6 +78,7 @@ Below are some remarks about the parameters.
 
 * Port 5000/udp is used for UPNP
 * Port 6543 and 6544 are used by MythTV (API and web GUI)
+* Port 3389 is used for RDP
 
 ## Volumes
 

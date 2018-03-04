@@ -20,7 +20,8 @@ ENV DATABASE_USER=mythtv
 ENV DATABASE_PWD=mythtv
 
 # Expose ports
-EXPOSE 5000 6543 6544
+# Don't directly expose ports, leave that to config
+# EXPOSE 5000 6543 6544
 
 # set volumes
 VOLUME /home/mythtv /var/lib/mythtv/db_backups
