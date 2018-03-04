@@ -91,4 +91,4 @@ echo "waiting....."
 sleep 2s
 done
 echo "start backend"
-exec su - mythtv -c /usr/bin/mythbackend --syslog local7
+exec su - mythtv -c "/usr/bin/mythbackend --syslog local7"
