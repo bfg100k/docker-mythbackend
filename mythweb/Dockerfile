@@ -7,6 +7,8 @@ COPY files /root/
 
 # Install mythtvweb
 RUN apt-get install -y mythweb && \
+	a2enmod headers && \
+	a2enmod auth_digest && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \

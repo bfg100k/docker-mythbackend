@@ -31,7 +31,7 @@ COPY files /root/
 
 # add repositories
 RUN apt-get update -qq && \
-	apt-get install -y locales && \
+	apt-get install -y locales tzdata && \
 # chfn workaround - Known issue within Dockers
 	ln -s -f /bin/true /usr/bin/chfn && \
 # set the locale
