@@ -33,13 +33,10 @@ chown -R mythtv:mythtv /home/mythtv/
 chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
 
 # Fix the config
-if [ -f "/home/mythtv/.mythtv/config.xml" ]; then
+if [ -f "/var/lib/mythtv/.mythtv/config.xml" ]; then
   echo "Copying config file that was set in home"
-  cp /home/mythtv/.mythtv/config.xml /root/config.xml
-  cp /home/mythtv/.mythtv/config.xml /root/.mythtv/config.xml
-  cp /home/mythtv/.mythtv/config.xml /usr/share/mythtv/config.xml
-  cp /home/mythtv/.mythtv/config.xml /etc/mythtv/config.xml
 else
+  echo "Setting config from environment variables"
   cat << EOF > /root/config.xml
 <Configuration>
   <LocalHostName>MythTV-Server</LocalHostName>
@@ -59,12 +56,12 @@ else
   </WakeOnLAN>
 </Configuration>
 EOF
-  mkdir -p /home/mythtv/.mythtv
-  cp /root/config.xml /root/.mythtv/config.xml
-  cp /root/config.xml /usr/share/mythtv/config.xml
-  cp /root/config.xml /etc/mythtv/config.xml
-  cp /root/config.xml /home/mythtv/.mythtv/config.xml
 fi
+mkdir -p /home/mythtv/.mythtv
+cp /root/config.xml /root/.mythtv/config.xml
+cp /root/config.xml /usr/share/mythtv/config.xml
+cp /root/config.xml /etc/mythtv/config.xml
+cp /root/config.xml /home/mythtv/.mythtv/config.xml
 
 # Prepare X
 if [ -f "/home/mythtv/.Xauthority" ]; then
@@ -73,17 +70,10 @@ else
   touch /home/mythtv/.Xauthority
 fi
 
-if [ ! -f "/home/mythtv/Desktop/Kill-Mythtv-Backend.desktop" ]; then
-  mkdir -p /home/mythtv/Desktop
-  cp /root/Kill-Mythtv-Backend.desktop /home/mythtv/Desktop/Kill-Mythtv-Backend.desktop
-else
-  echo "kill switch is set"
-fi
-
 if [ ! -f "/home/mythtv/Desktop/hdhr.desktop" ]; then
   cp /usr/share/applications/hdhr.desktop /home/mythtv/Desktop/hdhr.desktop
 else
-  echo "Hdhomerun Config is set"
+  echo "HDHomeRun Config is set"
 fi
 
 if [ ! -f "/home/mythtv/Desktop/mythtv-setup.desktop" ]; then
@@ -122,16 +112,4 @@ fi
 mkdir -p /var/run/sshd
 mkdir -p /root/.vnc
 
-/usr/bin/supervisord -c /root/supervisor-files/rdp-supervisord.conf & >/dev/null 2>&1
-
-#Bring up the backend
-chown -R mythtv:users /var/log/mythtv
-
-echo "Checking whether database(s) are ready"
-until [ "$( mysqladmin -h ${DATABASE_HOST} -P ${DATABASE_PORT} -u${DATABASE_USER} -p${DATABASE_PWD} status 2>&1 >/dev/null | grep -ci error:)" = "0" ]
-do
-echo "waiting....."
-sleep 2s
-done
-echo "start backend"
-exec su - mythtv -c /usr/bin/mythbackend --syslog local7
+/usr/bin/supervisord -c /root/supervisor-files/rdp-supervisord.conf -n

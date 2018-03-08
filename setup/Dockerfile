@@ -5,10 +5,13 @@ COPY files /root/
 
 EXPOSE 3389
 
-# install xrdp
-RUN apt-get install \
-	xrdp -y && \
+# install RDP environment 
+RUN apt-get install -y --no-install-recommends \
+	xrdp supervisor mate-desktop-environment && \
 	mv /root/xrdp.ini /etc/xrdp/xrdp.ini && \
+# install HD Homerun Utilities
+	apt-get install -y --no-install-recommends \
+	hdhomerun-config hdhomerun-config-gui && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
