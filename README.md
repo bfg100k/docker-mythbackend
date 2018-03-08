@@ -2,7 +2,7 @@ MythTV backend
 ==============
 
 Docker image to run a MythTV backend. It also includes database backups and HDHomeRun utils.
-All special MythTV folders (as setup in mythtv-setup) should be added to the /home/mythtv volume. If .mythtv/config.xml is found in this volume, that config is used, so the environment variables doen't need to be set. 
+All special MythTV folders (as setup in mythtv-setup) should be added to the /var/lib/mythtv volume. If .mythtv/config.xml is found in this volume, that config is used, so the environment variables doen't need to be set. 
 The mythdatabase branch/tag should be run side-by-side with master/latest branch/tag. It will run the cron job to check and backup your mythtv database.
 The setup branch/tag is intended to run mythtv-setup over RDP. This should be run instead of the master/latest branch/tag, during setup only. 
 The mythweb branch/tag starts an Apache service, to host MythWeb, on port 80.
@@ -14,14 +14,13 @@ Launch the container via docker:
 ```
 sudo docker run -d --name mythbackend \
         -p "5000:5000" -p "6543:6543" -p "6544:6544" \
-        -v "/path/to/mythtv-home:/home/mythtv" \
+        -v "/path/to/mythtv-home:/var/lib/mythtv" \
         -v "/path/to/mythtv-backups:/var/lib/mythtv/db_backups" \
         -e "USER_ID=1001" \
         -e "GROUP_ID=1001" \
-        -e "DATABASE_HOST=dbhost" \
+        -e "DATABASE_HOST=mysql" \
         -e "DATABASE_PORT=3306" \
-        -e "DATABASE_ROOT=root" \
-        -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_NAME=mythconverg" \
         -e "DATABASE_USER=mythtv" \
         -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \
@@ -31,22 +30,17 @@ sudo docker run -d --name mythbackend \
 sudo docker run -d --name mythdatabase \
         -e "USER_ID=1001" \
         -e "GROUP_ID=1001" \
-        -e "DATABASE_HOST=dbhost" \
+        -e "DATABASE_HOST=mysql" \
         -e "DATABASE_PORT=3306" \
-        -e "DATABASE_ROOT=root" \
-        -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_NAME=mythconverg" \
         -e "DATABASE_USER=mythtv" \
         -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \
 		 dheaps/mythbackend:mythdatabasedheaps/mythbackend:latest &&
 sudo docker run -d --name mythweb \
 		-p 80:80
-        -e "USER_ID=1001" \
-        -e "GROUP_ID=1001" \
-        -e "DATABASE_HOST=dbhost" \
-        -e "DATABASE_PORT=3306" \
-        -e "DATABASE_ROOT=root" \
-        -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_HOST=mysql" \
+        -e "DATABASE_NAME=mythconverg" \
         -e "DATABASE_USER=mythtv" \
         -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \
@@ -60,10 +54,11 @@ sudo docker run -d --name mythbackend \
         -v "/path/to/mythtv-backups:/var/lib/mythtv/db_backups" \
         -e "USER_ID=1001" \
         -e "GROUP_ID=1001" \
-        -e "DATABASE_HOST=dbhost" \
+        -e "DATABASE_HOST=mysql" \
         -e "DATABASE_PORT=3306" \
         -e "DATABASE_ROOT=root" \
         -e "DATABASE_ROOT_PWD=rootpassword" \
+        -e "DATABASE_NAME=mythconverg" \
         -e "DATABASE_USER=mythtv" \
         -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \

@@ -1,4 +1,4 @@
-FROM dheaps/mythbackend:latest
+FROM dheaps/mythbackend:mythbuntu
 
 EXPOSE 80
 

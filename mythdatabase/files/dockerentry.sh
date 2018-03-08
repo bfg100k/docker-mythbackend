@@ -32,13 +32,10 @@ usermod -a -G mythtv,users mythtv
 chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
 
 # Fix the config
-if [ -f "/home/mythtv/.mythtv/config.xml" ]; then
+if [ -f "/var/lib/mythtv/.mythtv/config.xml" ]; then
   echo "Copying config file that was set in home"
-  cp /home/mythtv/.mythtv/config.xml /root/config.xml
-  cp /home/mythtv/.mythtv/config.xml /root/.mythtv/config.xml
-  cp /home/mythtv/.mythtv/config.xml /usr/share/mythtv/config.xml
-  cp /home/mythtv/.mythtv/config.xml /etc/mythtv/config.xml
 else
+  echo "Setting config from environment variables"
   cat << EOF > /root/config.xml
 <Configuration>
   <LocalHostName>MythTV-Server</LocalHostName>
@@ -47,7 +44,7 @@ else
     <Host>${DATABASE_HOST}</Host>
     <UserName>${DATABASE_USER}</UserName>
     <Password>${DATABASE_PASS}</Password>
-    <DatabaseName>mythconverg</DatabaseName>
+    <DatabaseName>${DATABASE_NAME}</DatabaseName>
     <Port>${DATABASE_PORT}</Port>
   </Database>
   <WakeOnLAN>
@@ -58,12 +55,12 @@ else
   </WakeOnLAN>
 </Configuration>
 EOF
-  mkdir -p /home/mythtv/.mythtv
-  cp /root/config.xml /root/.mythtv/config.xml
-  cp /root/config.xml /usr/share/mythtv/config.xml
-  cp /root/config.xml /etc/mythtv/config.xml
-  cp /root/config.xml /home/mythtv/.mythtv/config.xml
 fi
+mkdir -p /home/mythtv/.mythtv
+cp /root/config.xml /root/.mythtv/config.xml
+cp /root/config.xml /usr/share/mythtv/config.xml
+cp /root/config.xml /etc/mythtv/config.xml
+cp /root/config.xml /home/mythtv/.mythtv/config.xml
 
 echo "starting cron"
 exec cron -f
