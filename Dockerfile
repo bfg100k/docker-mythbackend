@@ -24,4 +24,15 @@ RUN apt-get install -y --no-install-recommends mythtv-backend mythtv-transcode-u
 	(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
 	(( find /usr/share/doc -empty|xargs rmdir || true ))
 
+# set mythtv to uid and gid
+RUN usermod -u ${USER_ID} mythtv && \
+	usermod -g ${GROUP_ID} mythtv && \
+# create/place required files/folders
+	mkdir -p /home/mythtv/.mythtv /var/lib/mythtv /var/log/mythtv /root/.mythtv && \
+# set a password for user mythtv and add to required groups
+	echo "mythtv:mythtv" | chpasswd && \
+	usermod -s /bin/bash -d /home/mythtv -a -G users,mythtv mythtv && \
+# set permissions for files/folders
+	chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
+
 CMD ["/root/dockerentry.sh"]
