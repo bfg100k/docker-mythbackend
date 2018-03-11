@@ -6,7 +6,7 @@ EXPOSE 80
 COPY files /root/
 
 # Install mythtvweb
-RUN apt-get install -y mythweb && \
+RUN apt-get install -y --no-install-recommends mythweb && \
 	a2enmod headers && \
 	a2enmod auth_digest && \
 # clean up

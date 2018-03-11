@@ -4,7 +4,7 @@ FROM dheaps/mythbackend:mythbuntu
 COPY files /root/
 
 # Install mythtv-database
-RUN apt-get install -y mythtv-database && \
+RUN apt-get install -y --no-install-recommends mythtv-database && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
