@@ -34,6 +34,7 @@ chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
 # Fix the config
 if [ -f "/var/lib/mythtv/.mythtv/config.xml" ]; then
   echo "Copying config file that was set in home"
+  cp /var/lib/mythtv/.mythtv/config.xml /root/config.xml
 else
   echo "Setting config from environment variables"
   cat << EOF > /root/config.xml
@@ -43,7 +44,7 @@ else
     <PingHost>1</PingHost>
     <Host>${DATABASE_HOST}</Host>
     <UserName>${DATABASE_USER}</UserName>
-    <Password>${DATABASE_PASS}</Password>
+    <Password>${DATABASE_PWD}</Password>
     <DatabaseName>${DATABASE_NAME}</DatabaseName>
     <Port>${DATABASE_PORT}</Port>
   </Database>

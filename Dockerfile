@@ -23,7 +23,7 @@ RUN apt-get install -y --no-install-recommends mythtv-backend mythtv-transcode-u
 	/usr/share/lintian /usr/share/linda /var/cache/man && \
 	(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
 	(( find /usr/share/doc -empty|xargs rmdir || true ))
-
+	
 # set mythtv to uid and gid
 RUN usermod -u ${USER_ID} mythtv && \
 	usermod -g ${GROUP_ID} mythtv && \
