@@ -5,12 +5,12 @@ echo "Set correct timezone"
 echo "TZ = $TZ"
 if [[ $(cat /etc/timezone) != $TZ ]] ; then
   echo "Update timezone"
-  echo $TZ > /etc/timezone
-  dpkg-reconfigure -f noninteractive tzdata
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+  echo $TZ > /etc/timezone && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
 else
   echo "Timezone is already correct"
 fi
+
+mkdir -p /home/mythtv/Desktop/
 
 # Create Mythtv users
 echo "Update mythtv user ids and groups"
@@ -40,7 +40,6 @@ else
   echo "Setting config from environment variables"
   cat << EOF > /root/config.xml
 <Configuration>
-  <LocalHostName>MythTV-Server</LocalHostName>
   <Database>
     <PingHost>1</PingHost>
     <Host>${DATABASE_HOST}</Host>
@@ -73,12 +72,14 @@ fi
 
 if [ ! -f "/home/mythtv/Desktop/hdhr.desktop" ]; then
   cp /usr/share/applications/hdhr.desktop /home/mythtv/Desktop/hdhr.desktop
+  chmod +x /home/mythtv/Desktop/hdhr.desktop
 else
   echo "HDHomeRun Config is set"
 fi
 
 if [ ! -f "/home/mythtv/Desktop/mythtv-setup.desktop" ]; then
   cp /root/mythtv-setup.desktop /home/mythtv/Desktop/mythtv-setup.desktop
+  chmod +x /home/mythtv/Desktop/mythtv-setup.desktop
 else
   echo "setup desktop icon is set"
 fi
