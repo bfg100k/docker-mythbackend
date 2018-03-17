@@ -1,12 +1,16 @@
 MythTV backend
 ==============
 
-Docker image to run a MythTV backend. It also includes database backups and HDHomeRun utils.
-All special MythTV folders (as setup in mythtv-setup) should be added to the /var/lib/mythtv volume. If .mythtv/config.xml is found in this volume, that config is used, so the environment variables doen't need to be set. 
-The mythdatabase branch/tag should be run side-by-side with master/latest branch/tag. It will run the cron job to check and backup your mythtv database.
-The setup branch/tag is intended to run mythtv-setup over RDP. This should be run instead of the master/latest branch/tag, during setup only. 
-The mythweb branch/tag starts an Apache service, to host MythWeb, on port 80.
-Note that this container does not include a MySQL or MariaDB database. You must set up a database before (no need to create the mythconverg database as it is automatically created if it does not exist).
+Docker image to run a MythTV backend. It also includes MythWeb, database backups, and HDHomeRun utilities.
+
+* The mythdatabase branch/tag should be run side-by-side with master/latest branch/tag. It will run the cron job to check and backup your MythTV database. 
+* The mythweb branch/tag starts an Apache service, to host MythWeb, on port 80.
+* The setup branch/tag is intended to run mythtv-setup over RDP. This should be run instead of the master/latest branch/tag, during setup only.
+
+
+* Note : That this container does not include a MySQL or MariaDB database. You must set up a database before (no need to create the mythconverg database as it is automatically created if it does not exist).
+* Note2: All special MythTV folders (as setup in mythtv-setup) should be added to the /var/lib/mythtv volume. If .mythtv/config.xml is found in this volume, that config is used.
+* Note3: The mythbackend service checks and waits for the mysql database, using the environment variables to configure.  
 
 ## Usage
 
@@ -36,7 +40,7 @@ sudo docker run -d --name mythdatabase \
         -e "DATABASE_USER=mythtv" \
         -e "DATABASE_PWD=mythtv" \
         -e "TZ=Europe/Paris" \
-		 dheaps/mythbackend:mythdatabasedheaps/mythbackend:latest &&
+		 dheaps/mythbackend:mythdatabase &&
 sudo docker run -d --name mythweb \
 		-p 80:80
         -e "DATABASE_HOST=mysql" \
