@@ -6,8 +6,8 @@ COPY files /root/
 EXPOSE 3389
 
 # install RDP environment 
-RUN apt-get install -y --no-install-recommends \
-	xrdp supervisor mate-desktop-environment && \
+RUN apt-get install -y xrdp supervisor && \
+    apt-get install -y --no-install-recommends mate-desktop-environment && \
 	mv /root/xrdp.ini /etc/xrdp/xrdp.ini && \
 # install HD Homerun Utilities
 	apt-get install -y --no-install-recommends \
