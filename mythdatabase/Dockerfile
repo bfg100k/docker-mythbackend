@@ -5,6 +5,8 @@ COPY files /root/
 
 # Install mythtv-database
 RUN apt-get install -y --no-install-recommends mythtv-database && \
+# Add crontab entry
+	echo "3 23   * * 7    root    /usr/share/mythtv/mythconverg_backup.pl" >> /etc/crontab &&\
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
