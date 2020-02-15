@@ -30,6 +30,7 @@ RUN apt-get update -qq && \
 	apt-get install -y software-properties-common --no-install-recommends && \
 	apt-add-repository ppa:mythbuntu/30 -y && \
 	apt-get update -qq && \
+	apt-get install -y --no-install-recommends mythtv-common mysql-client  && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
