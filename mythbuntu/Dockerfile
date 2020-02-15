@@ -28,7 +28,7 @@ RUN apt-get update -qq && \
 	locale-gen en_US.UTF-8 && \
 # prepare apt 
 	apt-get install -y software-properties-common --no-install-recommends && \
-	apt-add-repository ppa:mythbuntu/0.29 -y && \
+	apt-add-repository ppa:mythbuntu/30 -y && \
 	apt-get update -qq && \
 # clean up
 	apt-get clean && \
