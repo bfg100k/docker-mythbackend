@@ -110,8 +110,7 @@ if [ "xpwd" != "x$DATABASE_ROOT_PWD" ]; then
 	fi
 fi
 
-# Bring up RDP
-mkdir -p /var/run/sshd
-mkdir -p /root/.vnc
+# Bring up VNC
+x11vnc -storepasswd $VNC_PASS /root/.vnc/passwd
 
-/usr/bin/supervisord -c /root/supervisor-files/rdp-supervisord.conf -n
+/usr/bin/supervisord -c /root/supervisor-files/vnc-supervisord.conf -n
