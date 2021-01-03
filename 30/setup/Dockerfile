@@ -8,7 +8,7 @@ EXPOSE 5900
 ENV VNC_PASS=1234
 
 # install RDP environment 
-RUN apt-get install -y --no-install-recommends x11vnc xorg-xprop xvfb supervisor && \
+RUN apt-get install -y --no-install-recommends x11vnc xvfb supervisor && \
     mkdir ~/.vnc  && \
     echo /usr/bin/mythtv-setup >> ~/.bashrc && \
     chmod 700 /root/dockerentry.sh && \
