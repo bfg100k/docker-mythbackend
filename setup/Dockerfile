@@ -12,9 +12,6 @@ RUN apt-get install -y --no-install-recommends x11vnc xvfb sudo supervisor && \
     mkdir ~/.vnc  && \
     echo /usr/bin/mythtv-setup >> ~/.bashrc && \
     chmod 700 /root/dockerentry.sh && \
-# install HD Homerun Utilities
-	apt-get install -y --no-install-recommends \
-	hdhomerun-config hdhomerun-config-gui && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
