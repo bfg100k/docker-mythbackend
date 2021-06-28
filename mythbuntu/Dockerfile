@@ -3,9 +3,9 @@ FROM ubuntu:20.04
 # Set correct environment variables
 ENV HOME="/root"
 ENV TERM=xterm
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_AU.UTF-8
+ENV LANGUAGE=en_AU:en
+ENV LC_ALL=en_AU.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
 
 # These should be set at runtime.
@@ -25,7 +25,7 @@ RUN apt-get update -qq && \
 # chfn workaround - Known issue within Dockers
 	ln -s -f /bin/true /usr/bin/chfn && \
 # set the locale
-	locale-gen en_US.UTF-8 && \
+	locale-gen ${LANG} && \
 # prepare apt 
 	apt-get install -y software-properties-common --no-install-recommends && \
 	apt-add-repository ppa:mythbuntu/31 -y && \
