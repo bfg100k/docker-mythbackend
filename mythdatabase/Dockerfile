@@ -1,4 +1,4 @@
-FROM dheaps/mythbackend:mythbuntu
+FROM bfg100k/mythtv:base
 
 # Add files
 COPY files /root/

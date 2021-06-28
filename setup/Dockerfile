@@ -1,4 +1,4 @@
-FROM dheaps/mythbackend:latest
+FROM bfg100k/mythtv:mythbackend
 
 # Add files
 COPY files /root/

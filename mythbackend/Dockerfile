@@ -1,4 +1,4 @@
-FROM dheaps/mythbackend:mythbuntu
+FROM bfg100k/mythtv:base
 
 # Expose ports
 EXPOSE 5000 6543 6544
