@@ -11,6 +11,9 @@ COPY files /root/
 
 # install mythtv-backend and utilities
 RUN apt-get install -y --no-install-recommends mythtv-backend xmltv && \
+# add tv_grab_file
+wget ‐‐directory-prefix=/usr/bin https://raw.githubusercontent.com/b-jesch/tv_grab_file/master/tv_grab_file && \
+chmod a+rx /usr/bin/tv_grab_file && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
