@@ -28,6 +28,9 @@ RUN usermod -u ${USER_ID} mythtv && \
 	echo "mythtv:mythtv" | chpasswd && \
 	usermod -s /bin/bash -d /home/mythtv -a -G users,mythtv mythtv && \
 # set permissions for files/folders
-	chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
+	chown -R mythtv:users /var/lib/mythtv /var/log/mythtv && \
+# setup epg file download script
+	mv /root/tv_grab_au_file /usr/bin/tv_grab_au_file && \
+	chmod a+rx /usr/bin/tv_grab_au_file
 
 CMD ["/root/dockerentry.sh"]

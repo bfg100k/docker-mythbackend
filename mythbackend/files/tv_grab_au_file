@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Simple script to download epg data in xmltv format from website https://www.xmltv.net/
+
+TARGET_XML=/tmp/epg.xml
+
+while getopts s:r: flag
+do
+    case "${flag}" in
+        s) SOURCEID=${OPTARG};;
+        r) REGION=${OPTARG};;
+    esac
+done
+
+#sanity check
+[ -z "$SOURCEID" ] && exit 1
+[ -z "$REGION" ] && exit 1
+
+
+#remove any old file
+rm -f $TARGET_XML
+
+#grab xmltv file from website
+wget http://xmltv.net/xml_files/$REGION.xml -O $TARGET_XML
+
+#populate mythtv if download is successful
+[ -s $TARGET_XML ] && mythfilldatabase --file --sourceid $SOURCEID --xmlfile $TARGET_XML
+
+
+exit 0
