@@ -77,13 +77,6 @@ else
   touch /home/mythtv/.Xauthority
 fi
 
-if [ ! -f "/home/mythtv/Desktop/hdhr.desktop" ]; then
-  cp /usr/share/applications/hdhr.desktop /home/mythtv/Desktop/hdhr.desktop
-  chmod +x /home/mythtv/Desktop/hdhr.desktop
-else
-  echo "HDHomeRun Config is set"
-fi
-
 if [ ! -f "/home/mythtv/Desktop/mythtv-setup.desktop" ]; then
   cp /root/mythtv-setup.desktop /home/mythtv/Desktop/mythtv-setup.desktop
   chmod +x /home/mythtv/Desktop/mythtv-setup.desktop
