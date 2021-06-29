@@ -13,8 +13,8 @@ do
 done
 
 #sanity check
-[ -z "$SOURCEID" ] && exit 1
-[ -z "$REGION" ] && exit 1
+[ -z "$SOURCEID" ] && echo "Source id (-s) not specified" && exit 1
+[ -z "$REGION" ] && echo "Region (-r) not specified" && exit 1
 
 
 #remove any old file
@@ -22,6 +22,18 @@ rm -f $TARGET_XML
 
 #grab xmltv file from website
 wget http://xmltv.net/xml_files/$REGION.xml -O $TARGET_XML
+
+#clean up channel names to match OTA ones (region dependent)
+if [ "$REGION" == "Sydney" ] 
+then
+    echo "Cleaning up channel names in downloaded guide data for Sydney"
+    #remove trailing NSW
+    sed -i 's/ NSW<\/display-name>/<\/display-name>/g' $TARGET_XML
+    #remove trailing Sydney
+    sed -i 's/ Sydney<\/display-name>/<\/display-name>/g' $TARGET_XML
+    #add trailing Sydney for 7 channels
+    sed -i 's/>7\(.*\)<\/display-name>/>7\1 Sydney<\/display-name>/g' $TARGET_XML
+fi
 
 #populate mythtv if download is successful
 [ -s $TARGET_XML ] && mythfilldatabase --file --sourceid $SOURCEID --xmlfile $TARGET_XML
