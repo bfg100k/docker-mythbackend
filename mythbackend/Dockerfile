@@ -9,8 +9,11 @@ VOLUME /var/lib/mythtv /var/log/mythtv
 # Add files
 COPY files /root/
 
-# install mythtv-backend and utilities
-RUN apt-get install -y --no-install-recommends mythtv-backend xmltv && \
+# install mythtv-backend, mythweb and utilities
+RUN apt-get install -y --no-install-recommends mythtv-backend mythweb xmltv && \
+# enable apache modules
+	a2enmod headers && \
+	a2enmod auth_digest && \
 # clean up
 	apt-get clean && \
 	rm -rf /tmp/* /var/tmp/* \
