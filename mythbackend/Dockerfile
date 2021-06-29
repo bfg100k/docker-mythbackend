@@ -4,7 +4,7 @@ FROM bfg100k/mythtv:base
 EXPOSE 5000 6543 6544
 
 # set volumes
-VOLUME /var/lib/mythtv /var/log/mythtv
+VOLUME /var/lib/mythtv
 
 # Add files
 COPY files /root/
