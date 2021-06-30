@@ -61,7 +61,6 @@ EOF
 fi
 
 cp $MYTH_HOME/config.xml /usr/share/mythtv/config.xml
-cp $MYTH_HOME/config.xml /etc/mythtv/config.xml
 
 for f in /var/lib/mythtv/.mythtv/*.xmltv; do
     [ -e "$f" ] && echo "Copying XMLTV config file that was set in home" && 

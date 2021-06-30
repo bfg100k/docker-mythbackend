@@ -62,7 +62,6 @@ EOF
 fi
 
 cp $MYTH_HOME/config.xml /usr/share/mythtv/config.xml
-cp $MYTH_HOME/config.xml /etc/mythtv/config.xml
 
 for f in /var/lib/mythtv/.mythtv/*.xmltv; do
     [ -e "$f" ] && echo "Copying XMLTV config file that was set in home" && 
@@ -108,7 +107,7 @@ if [ "xpwd" != "x$DATABASE_ROOT_PWD" ]; then
 	fi
 fi
 
-#Set up ssh
+#Set up sshd
 if [ ! -f /etc/ssh/.keys_generated ] && \
      ! grep -q '^[[:space:]]*HostKey[[:space:]]' /etc/ssh/sshd_config; then
   rm /etc/ssh/ssh_host*
@@ -117,5 +116,5 @@ if [ ! -f /etc/ssh/.keys_generated ] && \
 fi
 mkdir -p /var/run/sshd
 
-wait $APP_PID
+wait $(pidof sshd)
 exit 0
