@@ -117,6 +117,4 @@ fi
 mkdir -p /var/run/sshd
 
 #start the service
-exec /usr/sbin/sshd
-
-exit 0
+exec /usr/sbin/sshd -D
