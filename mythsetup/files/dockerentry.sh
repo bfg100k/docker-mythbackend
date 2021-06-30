@@ -10,7 +10,6 @@ else
   echo "Timezone is already correct"
 fi
 
-mkdir -p /home/mythtv/Desktop/
 
 # Create Mythtv users
 echo "Update mythtv user ids and groups"
@@ -33,12 +32,13 @@ chown -R mythtv:mythtv /home/mythtv/
 chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
 
 # Fix the config
+mkdir -p /home/mythtv/.mythtv
 if [ -f "/var/lib/mythtv/.mythtv/config.xml" ]; then
   echo "Copying config file that was set in home"
-  cp /var/lib/mythtv/.mythtv/config.xml /root/config.xml
+  cp /var/lib/mythtv/.mythtv/config.xml /home/mythtv/.mythtv/config.xml
 else
   echo "Setting config from environment variables"
-  cat << EOF > /root/config.xml
+  cat << EOF > /home/mythtv/.mythtv/config.xml
 <Configuration>
   <Database>
     <PingHost>1</PingHost>
@@ -57,16 +57,12 @@ else
 </Configuration>
 EOF
 fi
-mkdir -p /home/mythtv/.mythtv
-cp /root/config.xml /root/.mythtv/config.xml
-cp /root/config.xml /usr/share/mythtv/config.xml
-cp /root/config.xml /etc/mythtv/config.xml
-cp /root/config.xml /home/mythtv/.mythtv/config.xml
+cp /home/mythtv/.mythtv/config.xml /usr/share/mythtv/config.xml
+cp /home/mythtv/.mythtv/config.xml /etc/mythtv/config.xml
 
 for f in /var/lib/mythtv/.mythtv/*.xmltv; do
     [ -e "$f" ] && echo "Copying XMLTV config file that was set in home" && 
-    cp /var/lib/mythtv/.mythtv/*.xmltv /home/mythtv/.mythtv/ &&
-    cp /home/mythtv/.mythtv/*.xmltv /root/.mythtv/
+    cp /var/lib/mythtv/.mythtv/*.xmltv /home/mythtv/.mythtv/
     break
 done
 
@@ -75,13 +71,7 @@ if [ -f "/home/mythtv/.Xauthority" ]; then
   echo ".Xauthority file appears to in place"
 else
   touch /home/mythtv/.Xauthority
-fi
-
-if [ ! -f "/home/mythtv/Desktop/mythtv-setup.desktop" ]; then
-  cp /root/mythtv-setup.desktop /home/mythtv/Desktop/mythtv-setup.desktop
-  chmod +x /home/mythtv/Desktop/mythtv-setup.desktop
-else
-  echo "setup desktop icon is set"
+  chown mythtv /home/mythtv/.Xauthority
 fi
 
 # check folders
@@ -114,7 +104,14 @@ if [ "xpwd" != "x$DATABASE_ROOT_PWD" ]; then
 	fi
 fi
 
-# Bring up VNC
-x11vnc -storepasswd $VNC_PASS /root/.vnc/passwd
+#Set up ssh
+if [ ! -f /etc/ssh/.keys_generated ] && \
+     ! grep -q '^[[:space:]]*HostKey[[:space:]]' /etc/ssh/sshd_config; then
+  rm /etc/ssh/ssh_host*
+  ssh-keygen -A
+  touch /etc/ssh/.keys_generated
+fi
+mkdir -p /var/run/sshd
 
-/usr/bin/supervisord -c /root/supervisor-files/vnc-supervisord.conf -n
+wait $APP_PID
+exit 0

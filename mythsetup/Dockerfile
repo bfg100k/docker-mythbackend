@@ -3,14 +3,12 @@ FROM bfg100k/mythtv:mythbackend
 # Add files
 COPY files /root/
 
-EXPOSE 5900
-
-ENV VNC_PASS=1234
+ENV $SSH_PORT=22
 
 # install RDP environment 
-RUN apt-get install -y --no-install-recommends x11vnc xvfb sudo supervisor && \
-    mkdir ~/.vnc  && \
-    echo /usr/bin/mythtv-setup >> ~/.bashrc && \
+RUN apt-get install -y --no-install-recommends openssh-server x11-utils xauth xterm && \
+    sed -i -e "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config && \
+	echo "mythtv:mythtv" | chpasswd && \
     chmod 700 /root/dockerentry.sh && \
 # clean up
 	apt-get clean && \
@@ -19,5 +17,7 @@ RUN apt-get install -y --no-install-recommends x11vnc xvfb sudo supervisor && \
 	/usr/share/lintian /usr/share/linda /var/cache/man && \
 	(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
 	(( find /usr/share/doc -empty|xargs rmdir || true ))
+
+EXPOSE ${$SSH_PORT}
 
 CMD ["/root/dockerentry.sh"]
