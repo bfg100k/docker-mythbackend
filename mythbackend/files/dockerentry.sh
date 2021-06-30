@@ -82,6 +82,12 @@ sed -i "s/setenv db_name.*/setenv db_name ${DATABASE_NAME}/" /etc/apache2/sites-
 sed -i "s/setenv db_login.*/setenv db_login ${DATABASE_USER}/" /etc/apache2/sites-available/mythweb.conf
 sed -i "s/setenv db_password.*/setenv db_password ${DATABASE_PWD}/" /etc/apache2/sites-available/mythweb.conf
 
+#Setup db backup job and start cron if requested. $DBBACKUP env var specifies the backup schedule in cron syntax
+if [ ! -z "$DBBACKUP" ]; then
+  echo "$DBBACKUP    root    /usr/share/mythtv/mythconverg_backup.pl" >> /etc/crontab
+  cron
+fi
+
 #Bring up the backend
 chown -R mythtv:users /var/log/mythtv
 

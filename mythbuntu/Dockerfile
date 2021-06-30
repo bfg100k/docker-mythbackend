@@ -18,6 +18,8 @@ ENV DATABASE_ROOT_PWD=pwd
 ENV DATABASE_NAME=mythconverg
 ENV DATABASE_USER=mythtv
 ENV DATABASE_PWD=mythtv
+ENV DBBACKUP=""
+
 
 # add repositories
 RUN apt-get update -qq && \
