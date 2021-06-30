@@ -117,8 +117,9 @@ fi
 mkdir -p /var/run/sshd
 
 #start the service
-/usr/sbin/sshd & export APP_PID=$!
+/usr/sbin/sshd
 
+echo "sshd started."
 #keep the container running
-wait $APP_PID
+wait $(pidof sshd)
 exit 0
