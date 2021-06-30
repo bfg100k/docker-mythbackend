@@ -107,7 +107,7 @@ if [ "xpwd" != "x$DATABASE_ROOT_PWD" ]; then
 	fi
 fi
 
-#Set up sshd
+#set up sshd
 if [ ! -f /etc/ssh/.keys_generated ] && \
      ! grep -q '^[[:space:]]*HostKey[[:space:]]' /etc/ssh/sshd_config; then
   rm /etc/ssh/ssh_host*
@@ -116,5 +116,9 @@ if [ ! -f /etc/ssh/.keys_generated ] && \
 fi
 mkdir -p /var/run/sshd
 
-wait $(pidof sshd)
+#start the service
+/usr/sbin/sshd & export APP_PID=$!
+
+#keep the container running
+wait $APP_PID
 exit 0
