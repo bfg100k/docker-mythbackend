@@ -88,10 +88,14 @@ fi
 if [ -d "/var/lib/mythtv/banners" ]; then
   echo "mythtv folders appear to be set"
 else
-  mkdir -p /var/lib/mythtv/banners  /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
+  mkdir -p /var/lib/mythtv/banners /var/lib/mythtv/channels /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
 fi
 
-chown -R mythtv:users /var/lib/mythtv/banners  /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
+chown -R mythtv:users /var/lib/mythtv/banners /var/lib/mythtv/channels /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
+
+#persist the channel icons in the external volume
+su mythtv -c "ln -s /var/lib/mythtv/channels/ /home/mythtv/.mythtv/"
+
 
 #Does the MythTV Database Exist?
 if [ "xpwd" != "x$DATABASE_ROOT_PWD" ]; then
