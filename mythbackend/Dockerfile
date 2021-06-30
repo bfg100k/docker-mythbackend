@@ -10,7 +10,7 @@ VOLUME /var/lib/mythtv
 COPY files /root/
 
 # install mythtv-backend, mythweb and utilities
-RUN apt-get install -y --no-install-recommends mythtv-backend mythweb xmltv && \
+RUN apt-get install -y --no-install-recommends mythtv-backend mythweb libmyth-python xmltv && \
 # enable apache modules
 	a2enmod headers && \
 	a2enmod auth_digest && \
