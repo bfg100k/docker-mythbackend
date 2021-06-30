@@ -3,7 +3,7 @@ FROM bfg100k/mythtv:mythbackend
 # Add files
 COPY files /root/
 
-ENV $SSH_PORT=22
+ENV SSH_PORT=22
 
 # install RDP environment 
 RUN apt-get install -y --no-install-recommends openssh-server x11-utils xauth xterm && \
