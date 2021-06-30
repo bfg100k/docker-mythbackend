@@ -6,7 +6,7 @@ COPY files /root/
 ENV SSH_PORT=22
 
 # install RDP environment 
-RUN apt-get install -y --no-install-recommends openssh-server x11-utils xauth xterm && \
+RUN apt-get install -y --no-install-recommends openssh-server x11-utils xauth xterm sudo && \
     sed -i -e "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config && \
 	echo "mythtv:mythtv" | chpasswd && \
     chmod 700 /root/dockerentry.sh && \
