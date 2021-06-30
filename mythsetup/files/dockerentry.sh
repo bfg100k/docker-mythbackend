@@ -117,9 +117,6 @@ fi
 mkdir -p /var/run/sshd
 
 #start the service
-/usr/sbin/sshd
+exec /usr/sbin/sshd
 
-echo "sshd started."
-#keep the container running
-wait $(pidof sshd)
 exit 0
