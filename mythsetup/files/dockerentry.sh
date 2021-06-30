@@ -26,19 +26,22 @@ usermod -u $USERID mythtv
 usermod -g $GROUPID mythtv
 usermod -d /home/mythtv mythtv
 usermod -a -G mythtv,users,adm,sudo mythtv
+
+MYTH_HOME=/home/mythtv/.mythtv
+
+mkdir -p $MYTH_HOME
 chown -R mythtv:mythtv /home/mythtv/
 
 # set permissions for files/folders
 chown -R mythtv:users /var/lib/mythtv /var/log/mythtv
 
 # Fix the config
-mkdir -p /home/mythtv/.mythtv
 if [ -f "/var/lib/mythtv/.mythtv/config.xml" ]; then
   echo "Copying config file that was set in home"
-  cp /var/lib/mythtv/.mythtv/config.xml /home/mythtv/.mythtv/config.xml
+  cp /var/lib/mythtv/.mythtv/config.xml $MYTH_HOME/config.xml
 else
   echo "Setting config from environment variables"
-  cat << EOF > /home/mythtv/.mythtv/config.xml
+  cat << EOF > $MYTH_HOME/config.xml
 <Configuration>
   <Database>
     <PingHost>1</PingHost>
@@ -57,12 +60,13 @@ else
 </Configuration>
 EOF
 fi
-cp /home/mythtv/.mythtv/config.xml /usr/share/mythtv/config.xml
-cp /home/mythtv/.mythtv/config.xml /etc/mythtv/config.xml
+
+cp $MYTH_HOME/config.xml /usr/share/mythtv/config.xml
+cp $MYTH_HOME/config.xml /etc/mythtv/config.xml
 
 for f in /var/lib/mythtv/.mythtv/*.xmltv; do
     [ -e "$f" ] && echo "Copying XMLTV config file that was set in home" && 
-    cp /var/lib/mythtv/.mythtv/*.xmltv /home/mythtv/.mythtv/
+    cp /var/lib/mythtv/.mythtv/*.xmltv $MYTH_HOME/
     break
 done
 
@@ -84,7 +88,7 @@ fi
 chown -R mythtv:users /var/lib/mythtv/banners /var/lib/mythtv/channels /var/lib/mythtv/coverart  /var/lib/mythtv/db_backups  /var/lib/mythtv/fanart  /var/lib/mythtv/livetv  /var/lib/mythtv/recordings  /var/lib/mythtv/screenshots  /var/lib/mythtv/streaming  /var/lib/mythtv/trailers  /var/lib/mythtv/videos
 
 #persist the channel icons in the external volume
-su mythtv -c "ln -s /var/lib/mythtv/channels/ /home/mythtv/.mythtv/"
+su mythtv -c "ln -s /var/lib/mythtv/channels/ $MYTH_HOME/"
 
 
 #Does the MythTV Database Exist?

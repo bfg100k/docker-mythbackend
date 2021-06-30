@@ -18,6 +18,6 @@ RUN apt-get install -y --no-install-recommends openssh-server x11-utils xauth xt
 	(( find /usr/share/doc -depth -type f ! -name copyright|xargs rm || true )) && \
 	(( find /usr/share/doc -empty|xargs rmdir || true ))
 
-EXPOSE ${$SSH_PORT}
+EXPOSE $SSH_PORT
 
 CMD ["/root/dockerentry.sh"]
